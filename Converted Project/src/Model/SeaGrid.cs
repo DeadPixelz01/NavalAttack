@@ -1,11 +1,9 @@
-/// <summary>
-/// The SeaGrid is the grid upon which the ships are deployed.
-/// </summary>
-/// <remarks>
-/// The grid is viewable via the ISeaGrid interface as a read only
-/// grid. This can be used in conjuncture with the SeaGridAdapter to
-/// mask the position of the ships.
-/// </remarks>
+
+// The SeaGrid is the grid upon which the ships are deployed.
+// The grid is viewable via the ISeaGrid interface as a read only
+// grid. This can be used in conjuncture with the SeaGridAdapter to
+// mask the position of the ships.
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -18,209 +16,172 @@ using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.VisualBasic;
-using Microsoft.VisualBasic.CompilerServices;
+using MyGame.Model;
 
-public class SeaGrid : ISeaGrid
+namespace MyGame.Model
 {
-    private const int _WIDTH = 10;
-    private const int _HEIGHT = 10;
-
-    private Tile[,] _GameTiles = new Tile[Width - 1 + 1, Height - 1 + 1];
-    private Dictionary<ShipName, Ship> _Ships;
-    private int _ShipsKilled = 0;
-
-    /// <summary>
-    /// The sea grid has changed and should be redrawn.
-    /// </summary>
-    public event EventHandler Changed;
-
-    /// <summary>
-    /// The width of the sea grid.
-    /// </summary>
-    /// <value>The width of the sea grid.</value>
-    /// <returns>The width of the sea grid.</returns>
-    public int Width
+    public class SeaGrid : ISeaGrid
     {
-        get
+        private const int _WIDTH = 10;
+        private const int _HEIGHT = 10;
+
+        private readonly Tile[,] _GameTiles;
+        private readonly Dictionary<ShipName, Ship> _Ships;
+        private int _ShipsKilled = 0;
+
+        int ISeaGrid.Height => Height;
+
+        /// The sea grid has changed and should be redrawn.
+        public event EventHandler Changed;
+
+        /// The width of the sea grid.
+        public int Width => _WIDTH;
+
+        int ISeaGrid.Width => Width;
+
+        /// The height of the sea grid
+        public int Height => _HEIGHT;
+
+        // ShipsKilled returns the number of ships killed
+        public int ShipsKilled { get; private set; } = 0;
+
+        // Show the tile view
+        public TileView get_Item(int x, int y)
         {
-            return _WIDTH;
+            return _GameTiles[x, y].View;
         }
-    }
 
-    /// <summary>
-    /// The height of the sea grid
-    /// </summary>
-    /// <value>The height of the sea grid</value>
-    /// <returns>The height of the sea grid</returns>
-    public int Height
-    {
-        get
+        /// AllDeployed checks if all the ships are deployed
+        public bool AllDeployed
         {
-            return _HEIGHT;
-        }
-    }
-
-    /// <summary>
-    /// ShipsKilled returns the number of ships killed
-    /// </summary>
-    public int ShipsKilled
-    {
-        get
-        {
-            return _ShipsKilled;
-        }
-    }
-
-    /// <summary>
-    /// Show the tile view
-    /// </summary>
-    /// <param name="x">x coordinate of the tile</param>
-    /// <param name="y">y coordiante of the tile</param>
-    /// <returns></returns>
-    public TileView get_Item(int x, int y)
-    {
-        return _GameTiles[x, y].View;
-    }
-
-    /// <summary>
-    /// AllDeployed checks if all the ships are deployed
-    /// </summary>
-    public bool AllDeployed
-    {
-        get
-        {
-            foreach (Ship s in _Ships.Values)
+            get
             {
-                if (!s.IsDeployed)
-                    return false;
+                foreach (var s in _Ships.Values)
+                {
+                    if (!s.IsDeployed)
+                        return false;
+                }
+                return true;
             }
-
-            return true;
-        }
-    }
-
-    /// <summary>
-    /// SeaGrid constructor, a seagrid has a number of tiles stored in an array
-    /// </summary>
-    public SeaGrid(Dictionary<ShipName, Ship> ships)
-    {
-        // fill array with empty Tiles
-        int i = default(int);
-        var loopTo = Width - 1;
-        for (i = 0; i <= loopTo; i++)
-        {
-            var loopTo1 = Height - 1;
-            for (int j = 0; j <= loopTo1; j++)
-                _GameTiles[i, j] = new Tile(i, j, null);
         }
 
-        _Ships = ships;
-    }
-
-    /// <summary>
-    /// MoveShips allows for ships to be placed on the seagrid
-    /// </summary>
-    /// <param name="row">the row selected</param>
-    /// <param name="col">the column selected</param>
-    /// <param name="ship">the ship selected</param>
-    /// <param name="direction">the direction the ship is going</param>
-    public void MoveShip(int row, int col, ShipName ship, Direction direction)
-    {
-        Ship newShip = _Ships(ship);
-        newShip.Remove();
-        AddShip(row, col, direction, newShip);
-    }
-
-    /// <summary>
-    /// AddShip add a ship to the SeaGrid
-    /// </summary>
-    /// <param name="row">row coordinate</param>
-    /// <param name="col">col coordinate</param>
-    /// <param name="direction">direction of ship</param>
-    /// <param name="newShip">the ship</param>
-    private void AddShip(int row, int col, Direction direction, Ship newShip)
-    {
-        try
+        /// SeaGrid constructor, a sea grid has a number of tiles stored in an array
+        public SeaGrid(Dictionary<ShipName, Ship> ships, TileView item)
         {
-            int size = newShip.Size;
-            int currentRow = row;
-            int currentCol = col;
-            int dRow = default(int), dCol = default(int);
-
-            if (direction == direction.LeftRight)
-            {
-                dRow = 0;
-                dCol = 1;
-            }
-            else
-            {
-                dRow = 1;
-                dCol = 0;
-            }
-
-            // place ship's tiles in array and into ship object
-            int i;
-            var loopTo = size - 1;
+            // fill array with empty Tiles
+            var i = default(int);
+            var loopTo = Width - 1;
             for (i = 0; i <= loopTo; i++)
             {
-                if ((currentRow < 0) | (currentRow >= Width) | (currentCol < 0) | (currentCol >= Height))
-                    throw new InvalidOperationException("Ship can't fit on the board");
-
-                _GameTiles[currentRow, currentCol].Ship = newShip;
-
-                currentCol += dCol;
-                currentRow += dRow;
+                var loopTo1 = Height - 1;
+                for (var j = 0; j <= loopTo1; j++)
+                {
+                    _GameTiles[i, j] = new Tile(i, j, null);
+                }
             }
-
-            newShip.Deployed(direction, row, col);
-        }
-        catch (Exception e)
-        {
-            newShip.Remove(); // if fails remove the ship
-            throw new ApplicationException(e.Message);
+            _Ships = ships;
+            Item = item;
         }
 
-        finally
+        /// MoveShips allows for ships to be placed on the sea grid
+        public void MoveShip(int row, int col, ShipName ship, Direction direction)
         {
-            Changed?.Invoke(this, EventArgs.Empty);
+            var newShip = _Ships[ship];
+            newShip.Remove();
+            AddShip(row, col, direction, newShip);
         }
-    }
 
-    /// <summary>
-    /// HitTile hits a tile at a row/col, and whatever tile has been hit, a
-    /// result will be displayed.
-    /// </summary>
-    /// <param name="row">the row at which is being shot</param>
-    /// <param name="col">the cloumn at which is being shot</param>
-    /// <returns>An attackresult (hit, miss, sunk, shotalready)</returns>
-    public AttackResult HitTile(int row, int col)
-    {
-        try
+        /// AddShip add a ship to the SeaGrid
+        private void AddShip(int row, int col, Direction direction, Ship newShip)
         {
-            // tile is already hit
-            if (_GameTiles[row, col].Shot)
-                return new AttackResult(ResultOfAttack.ShotAlready, "have already attacked [" + Conversions.ToString(col) + "," + Conversions.ToString(row) + "]!", row, col);
-
-            _GameTiles[row, col].Shoot();
-
-            // there is no ship on the tile
-            if (_GameTiles[row, col].Ship == null)
-                return new AttackResult(ResultOfAttack.Miss, "missed", row, col);
-
-            // all ship's tiles have been destroyed
-            if (_GameTiles[row, col].Ship.IsDestroyed)
+            try
             {
-                _GameTiles[row, col].Shot = true;
-                _ShipsKilled += 1;
-                return new AttackResult(ResultOfAttack.Destroyed, _GameTiles[row, col].Ship, "destroyed the enemy's", row, col);
+                var size = newShip.Size;
+                var currentRow = row;
+                var currentCol = col;
+
+                var dRow = default(int);
+                var dCol = default(int);
+                if (direction == Direction.LeftRight)
+                {
+                    dRow = 0;
+                    dCol = 1;
+                }
+                else
+                {
+                    dRow = 1;
+                    dCol = 0;
+                }
+
+                // place ship's tiles in array and into ship object
+                int i;
+                var loopTo = size - 1;
+                for (i = 0; i <= loopTo; i++)
+                {
+                    if ((currentRow < 0) | (currentRow >= Width) | (currentCol < 0) | (currentCol >= Height))
+                        throw new InvalidOperationException("Ship can't fit on the board");
+
+                    _GameTiles[currentRow, currentCol].Ship = newShip;
+
+                    currentCol += dCol;
+                    currentRow += dRow;
+                }
+
+                newShip.Deployed(direction, row, col);
+            }
+            catch (Exception e)
+            {
+                newShip.Remove(); // if fails remove the ship
+                throw new ApplicationException(e.Message);
             }
 
-            // else hit but not destroyed
-            return new AttackResult(ResultOfAttack.Hit, "hit something!", row, col);
+            finally
+            {
+                Changed?.Invoke(this, EventArgs.Empty);
+            }
         }
-        finally
+
+        public TileView Item { get; }
+
+        // HitTile hits a tile at a row/col, and whatever tile has been hit, a result will be displayed.
+        TileView ISeaGrid.Item(int row, int col)
         {
-            Changed?.Invoke(this, EventArgs.Empty);
+            throw new NotImplementedException();
+        }
+
+        public AttackResult HitTile(int row, int col)
+        {
+            try
+            {
+                // tile is already hit
+                if (_GameTiles[row, col].Shot)
+                    return new AttackResult(ResultOfAttack.ShotAlready, "have already attacked ["
+                                                                        + Convert.ToString(col) + "," +
+                                                                        Convert.ToString(row) + "]!",
+                        row, col);
+
+                _GameTiles[row, col].Shoot();
+
+                // there is no ship on the tile
+                if (_GameTiles[row, col].Ship == null)
+                    return new AttackResult(ResultOfAttack.Miss, "missed", row, col);
+
+                // all ship's tiles have been destroyed
+                if (!_GameTiles[row, col].Ship.IsDestroyed)
+                    return new AttackResult(ResultOfAttack.Hit, "hit something!", row, col);
+                _GameTiles[row, col].Shot = true;
+                ShipsKilled += 1;
+                return new AttackResult(ResultOfAttack.Destroyed, _GameTiles[row, col].Ship,
+                    "destroyed the enemy's", row, col);
+
+                // else hit but not destroyed
+                return new AttackResult(ResultOfAttack.Hit, "hit something!", row, col);
+            }
+            finally
+            {
+                Changed?.Invoke(this, EventArgs.Empty);
+            }
         }
     }
 }
+

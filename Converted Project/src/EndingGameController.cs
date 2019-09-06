@@ -1,3 +1,4 @@
+using MyGame.Model;
 using SwinGameSDK;
 
 // the EndingGameController is responsible for managing the interactions at the end of a game.
@@ -10,9 +11,9 @@ namespace MyGame
         {
             var toDraw = new Rectangle();
 
-            UtilityFunctions.DrawField(GameController.ComputerPlayer.PlayerGrid, GameController.ComputerPlayer,
+            UtilityFunctions.DrawField(Player.PlayerGrid, GameController.ComputerPlayer,
                 true);
-            UtilityFunctions.DrawSmallField(GameController.HumanPlayer.PlayerGrid, GameController.HumanPlayer);
+            UtilityFunctions.DrawSmallField(Player.PlayerGrid, GameController.HumanPlayer);
 
             toDraw.X = 0;
             toDraw.Y = 250;

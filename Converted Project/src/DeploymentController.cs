@@ -1,4 +1,5 @@
 using System;
+using MyGame.Model;
 using SwinGameSDK;
 
 namespace MyGame
@@ -101,14 +102,14 @@ namespace MyGame
             var col = Convert.ToInt32(Math.Floor((mouse.X - UtilityFunctions.FieldLeft) / (
                                                      double)(UtilityFunctions.CellWidth + UtilityFunctions.CellGap)));
 
-            if (row >= 0 & row < GameController.HumanPlayer.PlayerGrid.Height)
+            if (row >= 0 & row < Player.PlayerGrid.Height)
             {
-                if (col >= 0 & col < GameController.HumanPlayer.PlayerGrid.Width)
+                if (col >= 0 & col < Player.PlayerGrid.Width)
                 {
                     // if in the area try to deploy
                     try
                     {
-                        GameController.HumanPlayer.PlayerGrid.MoveShip(row, col, _selectedShip, _currentDirection);
+                        Player.PlayerGrid.MoveShip(row, col, _selectedShip, _currentDirection);
                     }
                     catch (Exception ex)
                     {
@@ -125,7 +126,7 @@ namespace MyGame
         ///     ''' </summary>
         public static void DrawDeployment()
         {
-            UtilityFunctions.DrawField(GameController.HumanPlayer.PlayerGrid, GameController.HumanPlayer, true);
+            UtilityFunctions.DrawField(Player.PlayerGrid, GameController.HumanPlayer, true);
 
             // Draw the Left/Right and Up/Down buttons
             SwinGame.DrawBitmap(

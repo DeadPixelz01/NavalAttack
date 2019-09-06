@@ -1,169 +1,74 @@
-/// <summary>
-/// ''' A Ship has all the details about itself. For example the shipname,
-/// ''' size, number of hits taken and the location. Its able to add tiles,
-/// ''' remove, hits taken and if its deployed and destroyed.
-/// ''' </summary>
-/// ''' <remarks>
-/// ''' Deployment information is supplied to allow ships to be drawn.
-/// ''' </remarks>
-using System;
+
+// A Ship has all the details about itself. For example the ship name, size, number of hits taken and the location.
+// Its able to add tiles, remove, hits taken and if its deployed and destroyed.
+// Deployment information is supplied to allow ships to be drawn.
+
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Security;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.VisualBasic;
 
-public class Ship
+namespace MyGame.Model
 {
-    private ShipName _shipName;
-    private int _sizeOfShip;
-    private int _hitsTaken = 0;
-    private List<Tile> _tiles;
-    private int _row;
-    private int _col;
-    private Direction _direction;
-
-    /// <summary>
-    ///     ''' The type of ship
-    ///     ''' </summary>
-    ///     ''' <value>The type of ship</value>
-    ///     ''' <returns>The type of ship</returns>
-    public string Name
+    public class Ship
     {
-        get
+        private readonly ShipName _shipName;
+        private readonly List<Tile> _tiles;
+
+        // The type of ship
+        public string Name => _shipName == ShipName.AircraftCarrier ? "Aircraft Carrier" : _shipName.ToString();
+
+        // The number of cells that this ship occupies.
+        public int Size { get; }
+
+        // The number of hits that the ship has taken.
+        public int Hits { get; private set; } = 0;
+
+        // The row location of the ship
+        public int Row { get; private set; }
+
+        public int Column { get; private set; }
+
+        public Direction Direction { get; private set; }
+
+        public Ship(ShipName ship)
         {
-            if (_shipName == ShipName.AircraftCarrier)
-                return "Aircraft Carrier";
+            _shipName = ship;
+            _tiles = new List<Tile>();
 
-            return _shipName.ToString();
+            // gets the ship size from the enumarator
+            Size = (int) _shipName;
         }
-    }
 
-    /// <summary>
-    ///     ''' The number of cells that this ship occupies.
-    ///     ''' </summary>
-    ///     ''' <value>The number of hits the ship can take</value>
-    ///     ''' <returns>The number of hits the ship can take</returns>
-    public int Size
-    {
-        get
+        // Add tile adds the ship tile
+        public void AddTile(Tile tile)
         {
-            return _sizeOfShip;
+            _tiles.Add(tile);
         }
-    }
 
-    /// <summary>
-    ///     ''' The number of hits that the ship has taken.
-    ///     ''' </summary>
-    ///     ''' <value>The number of hits the ship has taken.</value>
-    ///     ''' <returns>The number of hits the ship has taken</returns>
-    ///     ''' <remarks>When this equals Size the ship is sunk</remarks>
-    public int Hits
-    {
-        get
+        // Remove clears the tile back to a sea tile
+        public void Remove()
         {
-            return _hitsTaken;
+            foreach (var tile in _tiles)
+            {
+                tile.ClearShip();
+            }
+            _tiles.Clear();
         }
-    }
 
-    /// <summary>
-    ///     ''' The row location of the ship
-    ///     ''' </summary>
-    ///     ''' <value>The topmost location of the ship</value>
-    ///     ''' <returns>the row of the ship</returns>
-    public int Row
-    {
-        get
+        public void Hit()
         {
-            return _row;
+            Hits += 1;
         }
-    }
 
-    public int Column
-    {
-        get
+        /// IsDeployed returns if the ships is deployed, if its deployed it has more than 0 tiles
+        public bool IsDeployed => _tiles.Count > 0;
+
+        public bool IsDestroyed => Hits == Size;
+
+        // Record that the ship is now deployed.
+        internal void Deployed(Direction direction, int row, int col)
         {
-            return _col;
+            Row = row;
+            Column = col;
+            Direction = direction;
         }
-    }
-
-    public Direction Direction
-    {
-        get
-        {
-            return _direction;
-        }
-    }
-
-    public Ship(ShipName ship)
-    {
-        _shipName = ship;
-        _tiles = new List<Tile>();
-
-        // gets the ship size from the enumarator
-        _sizeOfShip = _shipName;
-    }
-
-    /// <summary>
-    ///     ''' Add tile adds the ship tile
-    ///     ''' </summary>
-    ///     ''' <param name="tile">one of the tiles the ship is on</param>
-    public void AddTile(Tile tile)
-    {
-        _tiles.Add(tile);
-    }
-
-    /// <summary>
-    ///     ''' Remove clears the tile back to a sea tile
-    ///     ''' </summary>
-    public void Remove()
-    {
-        foreach (Tile tile in _tiles)
-            tile.ClearShip();
-        _tiles.Clear();
-    }
-
-    public void Hit()
-    {
-        _hitsTaken = _hitsTaken + 1;
-    }
-
-    /// <summary>
-    ///     ''' IsDeployed returns if the ships is deployed, if its deplyed it has more than
-    ///     ''' 0 tiles
-    ///     ''' </summary>
-    public bool IsDeployed
-    {
-        get
-        {
-            return _tiles.Count > 0;
-        }
-    }
-
-    public bool IsDestroyed
-    {
-        get
-        {
-            return Hits == Size;
-        }
-    }
-
-    /// <summary>
-    ///     ''' Record that the ship is now deployed.
-    ///     ''' </summary>
-    ///     ''' <param name="direction"></param>
-    ///     ''' <param name="row"></param>
-    ///     ''' <param name="col"></param>
-    internal void Deployed(Direction direction, int row, int col)
-    {
-        _row = row;
-        _col = col;
-        _direction = direction;
     }
 }

@@ -12,6 +12,7 @@ using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.VisualBasic;
+using MyGame.Model;
 using SwinGameSDK;
 
 namespace MyGame
@@ -91,8 +92,7 @@ namespace MyGame
 
         private static void GridFixMethod(ISeaGrid grid, bool small, int row, int col, ref Color fillColor, ref bool draw)
         {
-            switch (grid.get_Item(row, col))
-
+            switch (grid.Item(row, col))
             {
                 case TileView.Ship:
                     draw = false;
@@ -265,8 +265,10 @@ namespace MyGame
             foreach (var s in ANIMATIONS)
             {
                 SwinGame.UpdateSprite(s);
-                if (s.animationHasEnded)
+                if (s.AnimationHasEnded)
+                {
                     ended.Add(s);
+                }
             }
 
             foreach (var s in ended)

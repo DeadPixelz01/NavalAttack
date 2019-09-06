@@ -1,7 +1,5 @@
-/// <summary>
-/// ''' The SeaGridAdapter allows for the change in a sea grid view. Whenever a ship is
-/// ''' presented it changes the view into a sea tile instead of a ship tile.
-/// ''' </summary>
+// The SeaGridAdapter allows for the change in a sea grid view. Whenever a ship is presented it
+// changes the view into a sea tile instead of a ship tile.
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -15,85 +13,52 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.VisualBasic;
 
-public class SeaGridAdapter : ISeaGrid
+namespace MyGame.Model
 {
-    private SeaGrid _MyGrid;
-
-    /// <summary>
-    ///     ''' Create the SeaGridAdapter, with the grid, and it will allow it to be changed
-    ///     ''' </summary>
-    ///     ''' <param name="grid">the grid that needs to be adapted</param>
-    public SeaGridAdapter(SeaGrid grid)
+    public class SeaGridAdapter : ISeaGrid
     {
-        _MyGrid = grid;
-        _MyGrid.Changed += new EventHandler(MyGrid_Changed);
-    }
+        private readonly SeaGrid _MyGrid;
 
-    /// <summary>
-    ///     ''' MyGrid_Changed causes the grid to be redrawn by raising a changed event
-    ///     ''' </summary>
-    ///     ''' <param name="sender">the object that caused the change</param>
-    ///     ''' <param name="e">what needs to be redrawn</param>
-    private void MyGrid_Changed(object sender, EventArgs e)
-    {
-        Changed?.Invoke(this, e);
-    }
-
-
-    /// <summary>
-    ///     ''' Changes the discovery grid. Where there is a ship we will sea water
-    ///     ''' </summary>
-    ///     ''' <param name="x">tile x coordinate</param>
-    ///     ''' <param name="y">tile y coordinate</param>
-    ///     ''' <returns>a tile, either what it actually is, or if it was a ship then return a sea tile</returns>
-    public TileView Item
-    {
-        get
+        // Create the SeaGridAdapter, with the grid, and it will allow it to be changed
+        public SeaGridAdapter(SeaGrid grid)
         {
-            TileView result = _MyGrid.Item(x, y);
-
-            if (result == TileView.Ship)
-                return TileView.Sea;
-            else
-                return result;
+            _MyGrid = grid;
+            _MyGrid.Changed += new EventHandler(MyGrid_Changed);
         }
-    }
 
-    /// <summary>
-    ///     ''' Indicates that the grid has been changed
-    ///     ''' </summary>
-    public event EventHandler Changed;
-
-    /// <summary>
-    ///     ''' Get the width of a tile
-    ///     ''' </summary>
-    public int Width
-    {
-        get
+        // MyGrid_Changed causes the grid to be redrawn by raising a changed event
+        private void MyGrid_Changed(object sender, EventArgs e)
         {
-            return _MyGrid.Width;
+            Changed?.Invoke(this, e);
         }
-    }
 
-    /// <summary>
-    ///     ''' Get the height of the tile
-    ///     ''' </summary>
-    public int Height
-    {
-        get
+
+        // Changes the discovery grid. Where there is a ship we will sea water
+        public TileView Item(int x, int y)
         {
-            return _MyGrid.Height;
+            var result = _MyGrid.get_Item(x, y);
+            return result == TileView.Ship ? TileView.Sea : result;
         }
-    }
 
-    /// <summary>
-    ///     ''' HitTile calls oppon _MyGrid to hit a tile at the row, col
-    ///     ''' </summary>
-    ///     ''' <param name="row">the row its hitting at</param>
-    ///     ''' <param name="col">the column its hitting at</param>
-    ///     ''' <returns>The result from hitting that tile</returns>
-    public AttackResult HitTile(int row, int col)
-    {
-        return _MyGrid.HitTile(row, col);
+        // Indicates that the grid has been changed
+        public event EventHandler Changed;
+
+        // Get the width of a tile
+        public int Width => _MyGrid.Width;
+
+        // Get the height of the tile
+        public int Height => _MyGrid.Height;
+
+        // HitTile calls open _MyGrid to hit a tile at the row, col
+        TileView ISeaGrid.Item(int row, int col)
+        {
+            throw new NotImplementedException();
+        }
+
+        public AttackResult HitTile(int row, int col)
+        {
+            return _MyGrid.HitTile(row, col);
+        }
     }
 }
+

@@ -16,6 +16,7 @@ using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.VisualBasic;
+using MyGame.Model;
 
 public class BattleShipsGame
 {
@@ -77,8 +78,8 @@ public class BattleShipsGame
     ///     ''' </summary>
     private void CompleteDeployment()
     {
-        _players[0].Enemy = new SeaGridAdapter(_players[1].PlayerGrid);
-        _players[1].Enemy = new SeaGridAdapter(_players[0].PlayerGrid);
+        _players[0].Enemy = new SeaGridAdapter(Player.PlayerGrid);
+        _players[1].Enemy = new SeaGridAdapter(Player.PlayerGrid);
     }
 
     /// <summary>

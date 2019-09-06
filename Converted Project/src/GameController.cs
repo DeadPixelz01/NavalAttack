@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using MyGame.Model;
 using SwinGameSDK;
 
 // The GameController is responsible for controlling the game,
@@ -9,7 +10,7 @@ namespace MyGame
     public static class GameController
     {
         private static BattleShipsGame _theGame;
-        private static AIPlayer _ai;
+        private static AiPlayer _ai;
 
         private static readonly Stack<GameState> STATE = new Stack<GameState>();
 
@@ -51,19 +52,19 @@ namespace MyGame
             {
                 case AIOption.Medium:
                     {
-                        _ai = new AIMediumPlayer(_theGame);
+                        _ai = new AiMediumPlayer(_theGame);
                         break;
                     }
                 case AIOption.Hard:
                     {
-                        _ai = new AIHardPlayer(_theGame);
+                        _ai = new AiHardPlayer(_theGame);
                         break;
                     }
                 case AIOption.Easy:
                     break;
                 default:
                     {
-                        _ai = new AIHardPlayer(_theGame);
+                        _ai = new AiHardPlayer(_theGame);
                         break;
                     }
             }
@@ -71,7 +72,7 @@ namespace MyGame
             HumanPlayer = new Player(_theGame);
 
             // AddHandler _human.PlayerGrid.Changed, AddressOf GridChanged
-            _ai.PlayerGrid.Changed += GridChanged;
+            Player.PlayerGrid.Changed += GridChanged;
             _theGame.AttackCompleted += AttackCompleted;
 
             AddNewState(GameState.Deploying);
@@ -81,7 +82,7 @@ namespace MyGame
         private static void EndGame()
         {
             // RemoveHandler _human.PlayerGrid.Changed, AddressOf GridChanged
-            _ai.PlayerGrid.Changed -= GridChanged;
+            Player.PlayerGrid.Changed -= GridChanged;
             _theGame.AttackCompleted -= AttackCompleted;
         }
 
