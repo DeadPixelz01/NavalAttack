@@ -17,7 +17,7 @@ namespace MyGame
 
         // returns the current state of the game, indicating which screen is
         // currently being used
-        private static GameState CurrentState => STATE.Peek();
+        public static GameState CurrentState => STATE.Peek();
 
         // returns the human player.
         public static Player HumanPlayer { get; private set; }
