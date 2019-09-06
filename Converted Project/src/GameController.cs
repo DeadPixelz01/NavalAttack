@@ -275,7 +275,7 @@ namespace MyGame
 
         // Draws the current state of the game to the screen.
         // what is drawn depends upon the state of the game.
-        private static void DrawScreen()
+        public static void DrawScreen()
         {
             UtilityFunctions.DrawBackground();
 
