@@ -1,33 +1,34 @@
+using Microsoft.VisualBasic;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using SwinGameSDK;
 
 namespace MyGame
 {
-    static class GameLogic
+    internal static class GameLogic
     {
         public static void Main()
         {
-            // Opens a new Graphics Window
-            SwinGame.OpenGraphicsWindow("Battle Ships", 800, 600);
+            // opens a new graphics window
+            SwinGame.OpenGraphicsWindow("Naval Attack", 800, 600);
 
-            // Load Resources
-            LoadResources();
+            // load Resources
+            GameResources.LoadResources();
+            SwinGame.PlayMusic(GameResources.GameMusic("Background"));
 
-            SwinGame.PlayMusic(GameMusic("Background"));
-
-            // Game Loop
+            // game Loop
             do
             {
-                HandleUserInput();
-                DrawScreen();
+                GameController.HandleUserInput();
+                GameController.DrawScreen();
             }
-            while (!SwinGame.WindowCloseRequested() == true | CurrentState == GameState.Quitting);
-
+            while (!SwinGame.WindowCloseRequested() || GameController.CurrentState == GameState.Quitting);
             SwinGame.StopMusic();
 
             // Free Resources and Close Audio, to end the program.
-            FreeResources();
+            GameResources.FreeResources();
         }
     }
 }
