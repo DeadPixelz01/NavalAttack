@@ -97,9 +97,9 @@ namespace MyGame
 
             // Calculate the row/col clicked
             var row = Convert.ToInt32(Math.Floor((mouse.Y) /
-                                                 (double)(UtilityFunctions.CELL_HEIGHT + UtilityFunctions.CELL_GAP)));
-            var col = Convert.ToInt32(Math.Floor((mouse.X - UtilityFunctions.FIELD_LEFT) / (
-                                                     double)(UtilityFunctions.CELL_WIDTH + UtilityFunctions.CELL_GAP)));
+                                                 (double)(UtilityFunctions.CellHeight + UtilityFunctions.CellGap)));
+            var col = Convert.ToInt32(Math.Floor((mouse.X - UtilityFunctions.FieldLeft) / (
+                                                     double)(UtilityFunctions.CellWidth + UtilityFunctions.CellGap)));
 
             if (row >= 0 & row < GameController.HumanPlayer.PlayerGrid.Height)
             {

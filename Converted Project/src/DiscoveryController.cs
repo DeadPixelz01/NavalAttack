@@ -39,10 +39,10 @@ namespace MyGame
             var mouse = SwinGame.MousePosition();
 
             // calculate the row/col clicked
-            var row = Convert.ToInt32(Math.Floor((mouse.Y - UtilityFunctions.FIELD_TOP) /
-                                                 (double)(UtilityFunctions.CELL_HEIGHT + UtilityFunctions.CELL_GAP)));
-            var col = Convert.ToInt32(Math.Floor((mouse.X - UtilityFunctions.FIELD_LEFT) /
-                                                 (double)(UtilityFunctions.CELL_WIDTH + UtilityFunctions.CELL_GAP)));
+            var row = Convert.ToInt32(Math.Floor((mouse.Y - UtilityFunctions.FieldTop) /
+                                                 (double)(UtilityFunctions.CellHeight + UtilityFunctions.CellGap)));
+            var col = Convert.ToInt32(Math.Floor((mouse.X - UtilityFunctions.FieldLeft) /
+                                                 (double)(UtilityFunctions.CellWidth + UtilityFunctions.CellGap)));
 
             if (row >= 0 & row < GameController.HumanPlayer.EnemyGrid.Height)
             {
