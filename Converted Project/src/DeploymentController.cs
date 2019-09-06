@@ -1,5 +1,4 @@
 using System;
-using NavalStrike;
 using SwinGameSDK;
 
 namespace MyGame
