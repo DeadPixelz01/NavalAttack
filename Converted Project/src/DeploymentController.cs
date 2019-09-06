@@ -65,19 +65,23 @@ namespace MyGame
                 DoDeployClick();
 
             if (GameController.HumanPlayer.ReadyToDeploy &&
-                UtilityFunctions.IsMouseInRectangle(PlayButtonLeft, TopButtonsTop, PlayButtonWidth, TopButtonsHeight))
+                UtilityFunctions.IsMouseInRectangle(PlayButtonLeft, TopButtonsTop, PlayButtonWidth,
+                    TopButtonsHeight))
             {
                 GameController.EndDeployment();
             }
-            else if (UtilityFunctions.IsMouseInRectangle(UpDownButtonLeft, TopButtonsTop, DirButtonsWidth, TopButtonsHeight))
+            else if (UtilityFunctions.IsMouseInRectangle(UpDownButtonLeft, TopButtonsTop, DirButtonsWidth,
+                TopButtonsHeight))
             {
                 _currentDirection = Direction.LeftRight;
             }
-            else if (UtilityFunctions.IsMouseInRectangle(LeftRightButtonLeft, TopButtonsTop, DirButtonsWidth, TopButtonsHeight))
+            else if (UtilityFunctions.IsMouseInRectangle(LeftRightButtonLeft, TopButtonsTop, DirButtonsWidth,
+                TopButtonsHeight))
             {
                 _currentDirection = Direction.LeftRight;
             }
-            else if (UtilityFunctions.IsMouseInRectangle(RandomButtonLeft, TopButtonsTop, RandomButtonWidth, TopButtonsHeight))
+            else if (UtilityFunctions.IsMouseInRectangle(RandomButtonLeft, TopButtonsTop, RandomButtonWidth,
+                TopButtonsHeight))
             {
                 GameController.HumanPlayer.RandomizeDeployment();
             }
@@ -92,8 +96,10 @@ namespace MyGame
             var mouse = SwinGame.MousePosition();
 
             // Calculate the row/col clicked
-            var row = Convert.ToInt32(Math.Floor((mouse.Y) / (double)(UtilityFunctions.CELL_HEIGHT + UtilityFunctions.CELL_GAP)));
-            var col = Convert.ToInt32(Math.Floor((mouse.X - UtilityFunctions.FIELD_LEFT) / (double)(UtilityFunctions.CELL_WIDTH + UtilityFunctions.CELL_GAP)));
+            var row = Convert.ToInt32(Math.Floor((mouse.Y) /
+                                                 (double)(UtilityFunctions.CELL_HEIGHT + UtilityFunctions.CELL_GAP)));
+            var col = Convert.ToInt32(Math.Floor((mouse.X - UtilityFunctions.FIELD_LEFT) / (
+                                                     double)(UtilityFunctions.CELL_WIDTH + UtilityFunctions.CELL_GAP)));
 
             if (row >= 0 & row < GameController.HumanPlayer.PlayerGrid.Height)
             {
@@ -134,7 +140,8 @@ namespace MyGame
                 if (i < 0) continue;
                 if (sn == _selectedShip)
                 {
-                    SwinGame.DrawBitmap(GameResources.GameImage("SelectedShip"), ShipsLeft, ShipsTop + i * ShipsHeight);
+                    SwinGame.DrawBitmap(GameResources.GameImage("SelectedShip"), ShipsLeft, ShipsTop
+                                                                                            + i * ShipsHeight);
                 }
             }
 
@@ -156,7 +163,8 @@ namespace MyGame
             {
                 var i = Convert.ToInt32(Convert.ToInt32(sn) - 1);
 
-                if (UtilityFunctions.IsMouseInRectangle(ShipsLeft, ShipsTop + i * ShipsHeight, ShipsWidth, ShipsHeight))
+                if (UtilityFunctions.IsMouseInRectangle(ShipsLeft, ShipsTop + i * ShipsHeight, ShipsWidth,
+                    ShipsHeight))
                 {
                     return sn;
                 }
