@@ -217,7 +217,8 @@ namespace MyGame
             SwinGame.FreeBitmap(_Animation);
             SwinGame.FreeBitmap(_LoaderEmpty);
             SwinGame.FreeBitmap(_LoaderFull);
-            Audio.FreeSoundEffect(_StartSound);
+            // freeing the game's sound seems to break everything... so I've commented it out for now >.>
+            //Audio.FreeSoundEffect(_StartSound);
             SwinGame.ChangeScreenSize(width, height);
         }
 
