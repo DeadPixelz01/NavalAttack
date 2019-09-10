@@ -19,7 +19,7 @@ using SwinGameSDK;
 /// ''' of a game.
 
 /// ''' </summary>
-
+namespace MyGame { 
 static class EndingGameController
 {
 
@@ -60,3 +60,4 @@ static class EndingGameController
         }
     }
 }
+|}
