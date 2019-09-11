@@ -20,9 +20,8 @@ namespace MyGame.Model
 {
     public abstract class AiPlayer : Player
     {
-
-        ///     ''' Location can store the location of the last hit made by an
-        ///     ''' AI Player. The use of which determines the difficulty.
+        // Location can store the location of the last hit made by an
+        // AI Player. The use of which determines the difficulty.
         protected class Location
         {
             // The row of the shot
