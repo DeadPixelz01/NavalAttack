@@ -90,6 +90,7 @@ namespace MyGame
             smallFieldCellHeight, smallFieldCellGap);
         }
 
+        // Part of the process of drawing the grid
         private static void GridFixMethod(ISeaGrid grid, bool small, int row, int col, ref Color fillColor, ref bool draw)
         {
             switch (grid.Item(row, col))
@@ -235,18 +236,22 @@ namespace MyGame
             SwinGame.DrawFramerate(675, 585);
         }
 
+        // plays the animation of an explosion to a tile
         public static void AddExplosion(int row, int col)
         {
             AddAnimation(row, col, "Splash");
         }
 
+        // plays the animation of a splash to a tile
         public static void AddSplash(int row, int col)
         {
             AddAnimation(row, col, "Splash");
         }
 
+        // initialises a list of animations
         private static readonly List<Sprite> ANIMATIONS = new List<Sprite>();
 
+        // plays a specified animation to a tile
         private static void AddAnimation(int row, int col, string image)
         {
             var imgObj = GameResources.GameImage(image);
@@ -259,6 +264,7 @@ namespace MyGame
             ANIMATIONS.Add(s);
         }
 
+        // updates animations to the next frame
         public static void UpdateAnimations()
         {
             var ended = new List<Sprite>();
@@ -278,12 +284,16 @@ namespace MyGame
             }
         }
 
+        // draws a frame of animations
+        // used by draw screen
         public static void DrawAnimations()
         {
             foreach (var s in ANIMATIONS)
                 SwinGame.DrawSprite(s);
         }
 
+        // draws an individual animated sequence
+        // eg. used by draw splash/explosion
         public static void DrawAnimationSequence()
         {
             int i;
