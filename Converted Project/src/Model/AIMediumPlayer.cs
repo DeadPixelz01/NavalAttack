@@ -19,7 +19,7 @@ namespace MyGame.Model
 {
    public class AiMediumPlayer : AiPlayer
     {
-        // Private enumarator for AI states. currently there are two states,
+        // Private enumerator for AI states. currently there are two states,
         // the AI can be searching for a ship, or if it has found a ship it will target the same ship
         private enum AiStates
         {
@@ -40,7 +40,7 @@ namespace MyGame.Model
         {
             do
             {
-                // check which state the AI is in and uppon that choose which coordinate generation
+                // check which state the AI is in and upon that choose which coordinate generation
                 // method will be used.
                 switch (_CurrentState)
                 {
@@ -56,7 +56,7 @@ namespace MyGame.Model
                         }
                     default:
                         {
-                            throw new ApplicationException("AI has gone in an imvalid state");
+                            throw new ApplicationException("AI has gone in an invalid state");
                             break;
                         }
                 }
@@ -80,11 +80,11 @@ namespace MyGame.Model
         // SearchCoords will randomly generate shots within the grid as long as its not hit that tile already
         private void SearchCoords(ref int row, ref int column)
         {
-            row = RANDOM.Next(0, EnemyGrid.Height);
-            column = RANDOM.Next(0, EnemyGrid.Width);
+            row = Convert.ToInt32(Random.Next(0, EnemyGrid.Height));
+            column = Convert.ToInt32(Random.Next(0, EnemyGrid.Width));
         }
 
-        // ProcessShot will be called uppon when a ship is found.
+        // ProcessShot will be called upon when a ship is found.
         // It will create a stack with targets it will try to hit. These targets will be around the
         // tile that has been hit.
         protected override void ProcessShot(int row, int col, AttackResult result)
