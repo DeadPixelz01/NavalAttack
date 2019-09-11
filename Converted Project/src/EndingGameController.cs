@@ -11,9 +11,9 @@ namespace MyGame
         {
             var toDraw = new Rectangle();
 
-            UtilityFunctions.DrawField(Player.PlayerGrid, GameController.ComputerPlayer,
+            UtilityFunctions.DrawField(GameController.ComputerPlayer.PlayerGrid, GameController.ComputerPlayer,
                 true);
-            UtilityFunctions.DrawSmallField(Player.PlayerGrid, GameController.HumanPlayer);
+            UtilityFunctions.DrawSmallField(GameController.HumanPlayer.PlayerGrid, GameController.HumanPlayer);
 
             toDraw.X = 0;
             toDraw.Y = 250;
@@ -29,12 +29,10 @@ namespace MyGame
         // will result in it reading in the highsSwinGame.
         public static void HandleEndOfGameInput()
         {
-            if (SwinGame.MouseClicked(MouseButton.LeftButton) || SwinGame.KeyTyped(KeyCode.ReturnKey) ||
-                SwinGame.KeyTyped(KeyCode.EscapeKey))
-            {
-                HighScoreController.ReadHighScore(GameController.HumanPlayer.Score);
-                GameController.EndCurrentState();
-            }
+            if (!SwinGame.MouseClicked(MouseButton.LeftButton) && !SwinGame.KeyTyped(KeyCode.ReturnKey) &&
+                !SwinGame.KeyTyped(KeyCode.EscapeKey)) return;
+            HighScoreController.ReadHighScore(GameController.HumanPlayer.Score);
+            GameController.EndCurrentState();
         }
     }
 }
