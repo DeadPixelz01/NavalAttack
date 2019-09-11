@@ -93,6 +93,7 @@ namespace MyGame
             SwinGame.RefreshScreen();
         }
 
+		// call explosion animation from utility functions and play sound effect
         private static void PlayHitSequence(int row, int column, bool showAnimation)
         {
             if (showAnimation)
@@ -104,6 +105,7 @@ namespace MyGame
             UtilityFunctions.DrawAnimationSequence();
         }
 
+		// call miss animation from utility functions and play sound effect
         private static void PlayMissSequence(int row, int column, bool showAnimation)
         {
             if (showAnimation)
