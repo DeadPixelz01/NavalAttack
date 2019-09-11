@@ -14,8 +14,10 @@ using SwinGameSDK;
 
 namespace MyGame
 {
+	// object to initialise all game resources
     public static class GameResources
     {
+		// initialises all fonts
         private static void LoadFonts()
         {
             NewFont("ArialLarge", "arial.ttf", 80);
@@ -23,7 +25,8 @@ namespace MyGame
             NewFont("CourierSmall", "cour.ttf", 8);
             NewFont("Menu", "ffaccess.ttf", 8);
         }
-
+	
+		// initialises all images
         private static void LoadImages()
         {
             // Backgrounds
@@ -51,6 +54,7 @@ namespace MyGame
             NewImage("Splash", "splash.png");
         }
 
+		// initialises all sounds
         private static void LoadSounds()
         {
             NewSound("Error", "error.wav");
@@ -62,6 +66,7 @@ namespace MyGame
             NewSound("Lose", "lose.wav");
         }
 
+		// initialises all music
         private static void LoadMusic()
         {
             NewMusic("Background", "horrordrone.mp3");
@@ -92,11 +97,13 @@ namespace MyGame
             return _Music[music];
         }
 
+		// initialise dictionary fields of images, fonts sounds and music
         private static Dictionary<string, Bitmap> _Images = new Dictionary<string, Bitmap>();
         private static Dictionary<string, Font> _Fonts = new Dictionary<string, Font>();
         private static Dictionary<string, SoundEffect> _Sounds = new Dictionary<string, SoundEffect>();
         private static Dictionary<string, Music> _Music = new Dictionary<string, Music>();
 
+		// initialise more fields
         private static Bitmap _Background;
         private static Bitmap _Animation;
         private static Bitmap _LoaderFull;
@@ -105,7 +112,6 @@ namespace MyGame
         private static SoundEffect _StartSound;
 
         // the resources class stores all of the Games Media Resources, such as Images, Fonts Sounds, Music.
-
         public static void LoadResources()
         {
             var width = SwinGame.ScreenWidth();
@@ -137,6 +143,7 @@ namespace MyGame
             EndLoadingScreen(width, height);
         }
 
+		// display loading screen
         private static void ShowLoadingScreen()
         {
             _Background = SwinGame.LoadBitmap(SwinGame.PathToResource("SplashBack.png",
@@ -160,6 +167,7 @@ namespace MyGame
             PlaySwinGameIntro();
         }
 
+		// show intro 
         private static void PlaySwinGameIntro()
         {
             const int aniCellCount = 11;
@@ -179,6 +187,7 @@ namespace MyGame
             SwinGame.Delay(1500);
         }
 
+        // displays a message in a text box on the screen
         private static void ShowMessage(string message, int number)
         {
             const int tx = 310;
@@ -206,6 +215,7 @@ namespace MyGame
             SwinGame.ProcessEvents();
         }
 
+        // closes loading screen and sets up main game to run
         private static void EndLoadingScreen(int width, int height)
         {
             SwinGame.ProcessEvents();
@@ -222,39 +232,46 @@ namespace MyGame
             SwinGame.ChangeScreenSize(width, height);
         }
 
+        // method for loading new fonts into _fonts dictionary
         private static void NewFont(string fontName, string filename, int size)
         {
             _Fonts.Add(fontName, SwinGame.LoadFont(SwinGame.PathToResource(filename, ResourceKind.FontResource), size));
         }
 
+        // method for loading new images into _images dictionary
         private static void NewImage(string imageName, string filename)
         {
             _Images.Add(imageName, SwinGame.LoadBitmap(SwinGame.PathToResource(filename,
                 ResourceKind.BitmapResource)));
         }
 
+        // method for loading new images with transparancy into _images dictionary
         private static void NewTransparentColorImage(string imageName, string fileName, Color transColor)
         {
             _Images.Add(imageName, SwinGame.LoadBitmap(SwinGame.PathToResource(fileName,
                 ResourceKind.BitmapResource)));
         }
 
+        // calls the above method. allows for misspelling of color as colour...
         private static void NewTransparentColourImage(string imageName, string fileName, Color transColor)
         {
             NewTransparentColorImage(imageName, fileName, transColor);
         }
 
+        // method for loading new sound effect into _sounds dictionary
         private static void NewSound(string soundName, string filename)
         {
             _Sounds.Add(soundName, Audio.LoadSoundEffect(SwinGame.PathToResource(filename,
                 ResourceKind.SoundResource)));
         }
 
+        // method for loading new music into _music dictionary
         private static void NewMusic(string musicName, string filename)
         {
             _Music.Add(musicName, Audio.LoadMusic(SwinGame.PathToResource(filename, ResourceKind.SoundResource)));
         }
 
+        // called by free resources to close all fonts
         private static void FreeFonts()
         {
             foreach (var obj in _Fonts.Values)
@@ -263,6 +280,7 @@ namespace MyGame
             }
         }
 
+        // called by free resources to close all images
         private static void FreeImages()
         {
             foreach (var obj in _Images.Values)
@@ -271,6 +289,7 @@ namespace MyGame
             }
         }
 
+        // called by free resources to close all sounds
         private static void FreeSounds()
         {
             foreach (var obj in _Sounds.Values)
@@ -279,6 +298,7 @@ namespace MyGame
             }
         }
 
+        // called by free resources to close all music
         private static void FreeMusic()
         {
             foreach (var obj in _Music.Values)
@@ -287,6 +307,7 @@ namespace MyGame
             }
         }
 
+        // closes all resources
         public static void FreeResources()
         {
             FreeFonts();
