@@ -1,7 +1,7 @@
 
 // AIHardPlayer is a type of player. This AI will know directions of ships when it has found 2 ship tiles
 // and will try to destroy that ship. If that ship is not destroyed it will shoot the other way.
-// Ship still not destroyed, then the AI knows it has hit multiple ships. Then will try to destoy all around tiles
+// Ship still not destroyed, then the AI knows it has hit multiple ships. Then will try to destroy all around tiles
 // that have been hit.
 
 using System;
@@ -13,7 +13,7 @@ namespace MyGame.Model
     {
 
         // Target allows the AI to know more things, for example the source of a shot target
-        protected class Target
+        private class Target
         {
             // The target shot at
             public Location ShotAt { get; }
@@ -34,7 +34,7 @@ namespace MyGame.Model
             public bool SameColumn => ShotAt.Column == Source.Column;
         }
 
-        // Private enumarator for AI states. currently there are two states, the AI can be searching for a ship,
+        // Private enumerator for AI states. currently there are two states, the AI can be searching for a ship,
         // or if it has found a ship it will target the same ship
         private enum AiStates
         {
@@ -63,7 +63,7 @@ namespace MyGame.Model
             do
             {
                 _CurrentTarget = null;
-                // check which state the AI is in and uppon that choose which coordinate generation
+                // check which state the AI is in and upon that choose which coordinate generation
                 // method will be used.
                 switch (_CurrentState)
                 {
@@ -110,8 +110,10 @@ namespace MyGame.Model
             _CurrentTarget = new Target(new Location(row, column), null );
         }
 
-        // ProcessShot is able to process each shot that is made and call the right methods belonging
-        // to that shot. For example, if its a miss = do nothing, if it's a hit = process that hit location
+        // ProcessShot is able to process each shot that
+        // is made and call the right methods belonging
+        // to that shot. For example, if its
+        // a miss = do nothing, if it's a hit = process that hit location
         protected override void ProcessShot(int row, int col, AttackResult result)
         {
             switch (result.Value)
@@ -147,30 +149,24 @@ namespace MyGame.Model
             }
         }
 
-        /// <summary>
-        ///     ''' ProcessDetroy is able to process the destroyed ships targets and remove _LastHit targets.
-        ///     ''' It will also call RemoveShotsAround to remove targets that it was going to shoot at
-        ///     ''' </summary>
-        ///     ''' <param name="row">the row that was shot at and destroyed</param>
-        ///     ''' <param name="col">the row that was shot at and destroyed</param>
-        ///     ''' <param name="ship">the row that was shot at and destroyed</param>
+        // ProcessDestroy is able to process the destroyed ships targets
+        // and remove _LastHit targets. It will also call
+        // RemoveShotsAround to remove targets that it was going to shoot at
         private void ProcessDestroy(int row, int col, Ship ship)
         {
-            bool foundOriginal;
-            Location source;
-            Target current;
-            current = _CurrentTarget;
+            var current = _CurrentTarget;
 
-            foundOriginal = false;
+            var foundOriginal = false;
 
             // i = 1, as we dont have targets from the current hit...
             int i;
             for (i = 1; i <= ship.Hits - 1; i++)
             {
+                Location source;
                 if (!foundOriginal)
                 {
                     source = current.Source;
-                    // Source is nnothing if the ship was originally hit in
+                    // Source is nothing if the ship was originally hit in
                     // the middle. This then searched forward, rather than
                     // backward through the list of targets
                     if (source == null)
@@ -248,13 +244,13 @@ namespace MyGame.Model
             }
             else
             {
-                // either targetting or hitting... both are the same here
+                // either targeting or hitting... both are the same here
                 _CurrentState = AiStates.HittingShip;
                 ReOrderTargets();
             }
         }
 
-        // ReOrderTargets will optimise the targeting by re-orderin the stack that the targets are in.
+        // ReOrderTargets will optimise the targeting by re-ordering the stack that the targets are in.
         // By putting the most important targets at the top they are the ones that will be shot at first.
         private void ReOrderTargets()
         {
@@ -300,7 +296,7 @@ namespace MyGame.Model
                 _Targets.Push(t);
             }
 
-            foreach (Target t in match)
+            foreach (var t in match)
             {
                 _Targets.Push(t);
             }
