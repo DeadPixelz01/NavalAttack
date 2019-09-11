@@ -72,7 +72,7 @@ namespace MyGame
             HumanPlayer = new Player(_theGame);
 
             // AddHandler _human.PlayerGrid.Changed, AddressOf GridChanged
-            Player.PlayerGrid.Changed += GridChanged;
+            HumanPlayer.PlayerGrid.Changed += GridChanged;
             _theGame.AttackCompleted += AttackCompleted;
 
             AddNewState(GameState.Deploying);
@@ -82,7 +82,7 @@ namespace MyGame
         private static void EndGame()
         {
             // RemoveHandler _human.PlayerGrid.Changed, AddressOf GridChanged
-            Player.PlayerGrid.Changed -= GridChanged;
+            _ai.PlayerGrid.Changed -= GridChanged;
             _theGame.AttackCompleted -= AttackCompleted;
         }
 
@@ -269,6 +269,10 @@ namespace MyGame
                         HighScoreController.HandleHighScoreInput();
                         break;
                     }
+                case GameState.Quitting:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
 
             UtilityFunctions.UpdateAnimations();
