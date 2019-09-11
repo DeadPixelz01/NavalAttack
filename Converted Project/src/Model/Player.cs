@@ -39,6 +39,7 @@ namespace MyGame.Model
             set => EnemyGrid = value;
         }
 
+        // Constructor for player object. Initialises
         public Player(BattleShipsGame controller)
         {
             GAME = controller;
@@ -73,12 +74,14 @@ namespace MyGame.Model
         // The number of shots the player has made
         public int Shots { get; private set; }
 
+        // Total number of shots that hit
         public int Hits { get; private set; }
 
 
         // Total number of shots that missed
         public int Missed { get; private set; }
 
+        // calculate and return score integer
         public int Score
         {
             get
@@ -94,6 +97,9 @@ namespace MyGame.Model
             }
         }
 
+        //
+        // Conversion error?
+        //
         // Makes it possible to enumerate over the ships the player has.
         public IEnumerator<Ship> GetShipEnumerator()
         {
@@ -104,13 +110,13 @@ namespace MyGame.Model
 
             return lst.GetEnumerator();
         }
-
         // Makes it possible to enumerate over the ships the player has.
         IEnumerator<Ship> IEnumerable<Ship>.GetEnumerator()
         {
+            // Potential Error?
             throw new NotImplementedException();
         }
-
+        // Makes it possible to enumerate over the ships the player has.
         public IEnumerator GetEnumerator()
         {
             var result = new Ship[SHIPS.Values.Count + 1];
@@ -120,6 +126,9 @@ namespace MyGame.Model
 
             return lst.GetEnumerator();
         }
+        //
+        // Conversion Error?
+        //
 
         // Virtual Attack allows the player to shoot
         public virtual AttackResult Attack()
@@ -152,6 +161,7 @@ namespace MyGame.Model
             return result;
         }
 
+        // randomise placement of ships
         public void RandomizeDeployment()
         {
             // for each ship to deploy in ship list
