@@ -24,10 +24,13 @@ namespace MyGame.Model
         // The row location of the ship
         public int Row { get; private set; }
 
+        // The Column location of the ship
         public int Column { get; private set; }
 
+        // The Direction of the ship
         public Direction Direction { get; private set; }
 
+        // Constructor for the ship
         public Ship(ShipName ship)
         {
             _shipName = ship;
@@ -53,6 +56,7 @@ namespace MyGame.Model
             _tiles.Clear();
         }
 
+        // adds to the Hits counter integer
         public void Hit()
         {
             Hits += 1;
@@ -61,6 +65,7 @@ namespace MyGame.Model
         /// IsDeployed returns if the ships is deployed, if its deployed it has more than 0 tiles
         public bool IsDeployed => _tiles.Count > 0;
 
+        // isDestroyed returns if the ship has been hit enough to be detroyed
         public bool IsDestroyed => Hits == Size;
 
         // Record that the ship is now deployed.
