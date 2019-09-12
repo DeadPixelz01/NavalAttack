@@ -1,85 +1,74 @@
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Security;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.VisualBasic;
 using SwinGameSDK;
 
-namespace MyGame
+/// <summary>
+/// The battle phase is handled by the DiscoveryController.
+/// </summary>
+static class DiscoveryController
 {
-    // the battle phase is handled by the DiscoveryController.
-    static class DiscoveryController
+    /// <summary>
+    /// Handles input during the discovery phase of the game.
+    /// </summary>
+    /// <remarks>
+    /// Escape opens the game menu. Clicking the mouse will
+    /// attack a location.
+    /// </remarks>
+    public static void HandleDiscoveryInput()
     {
-        // handles input during the discovery phase of the game.
-        // escape opens the game menu. Clicking the mouse will
-        // attack a location.
-        public static void HandleDiscoveryInput()
+        if (SwinGame.KeyTyped(KeyCode.EscapeKey))
+            GameController.AddNewState(GameState.ViewingGameMenu);
+
+        if (SwinGame.MouseClicked(MouseButton.LeftButton))
+            DoAttack();
+    }
+
+    /// <summary>
+    /// Attack the location that the mouse if over.
+    /// </summary>
+    private static void DoAttack()
+    {
+        Point2D mouse;
+
+        mouse = SwinGame.MousePosition();
+
+        // Calculate the row/col clicked
+        int row, col;
+        row = Convert.ToInt32(Math.Floor((mouse.Y - UtilityFunctions.FIELD_TOP) /
+                                         (UtilityFunctions.CELL_HEIGHT + UtilityFunctions.CELL_GAP)));
+        col = Convert.ToInt32(Math.Floor((mouse.X - UtilityFunctions.FIELD_LEFT) /
+                                         (UtilityFunctions.CELL_WIDTH + UtilityFunctions.CELL_GAP)));
+
+        if ((row >= 0) & (row < GameController.HumanPlayer.EnemyGrid.Height))
         {
-            if (SwinGame.KeyTyped(KeyCode.EscapeKey))
-            {
-                GameController.AddNewState(GameState.ViewingGameMenu);
-            }
-
-            if (SwinGame.MouseClicked(MouseButton.LeftButton))
-            {
-                DoAttack();
-            }
+            if ((col >= 0) & (col < GameController.HumanPlayer.EnemyGrid.Width))
+                GameController.Attack(row, col);
         }
+    }
 
-        // attack the location that the mouse if over
-        private static void DoAttack()
-        {
-            var mouse = SwinGame.MousePosition();
+    /// <summary>
+    /// Draws the game during the attack phase.
+    /// </summary>s
+    public static void DrawDiscovery()
+    {
+        const int SCORES_LEFT = 172;
+        const int SHOTS_TOP = 157;
+        const int HITS_TOP = 206;
+        const int SPLASH_TOP = 256;
 
-            // calculate the row/col clicked
-            var row = Convert.ToInt32(Math.Floor((mouse.Y - UtilityFunctions.FieldTop) /
-                                                 (double)(UtilityFunctions.CellHeight + UtilityFunctions.CellGap)));
-            var col = Convert.ToInt32(Math.Floor((mouse.X - UtilityFunctions.FieldLeft) /
-                                                 (double)(UtilityFunctions.CellWidth + UtilityFunctions.CellGap)));
+        if ((SwinGame.KeyDown(KeyCode.LeftShiftKey) | SwinGame.KeyDown(KeyCode.RightShiftKey)) &
+            SwinGame.KeyDown(KeyCode.CKey))
+            UtilityFunctions.DrawField(GameController.HumanPlayer.EnemyGrid, GameController.ComputerPlayer, true);
+        else
+            UtilityFunctions.DrawField(GameController.HumanPlayer.EnemyGrid, GameController.ComputerPlayer, false);
 
-            if (row >= 0 & row < GameController.HumanPlayer.EnemyGrid.Height)
-            {
-                if (col >= 0 & col < GameController.HumanPlayer.EnemyGrid.Width)
-                    GameController.Attack(row, col);
-            }
-        }
-        
-        // draws the game during the attack phase.
-        public static void DrawDiscovery()
-        {
-            const int scoresLeft = 172;
-            const int shotsTop = 157;
-            const int hitsTop = 206;
-            const int splashTop = 256;
+        UtilityFunctions.DrawSmallField(GameController.HumanPlayer.PlayerGrid, GameController.HumanPlayer);
+        UtilityFunctions.DrawMessage();
 
-            if ((SwinGame.KeyDown(KeyCode.LeftShiftKey) || SwinGame.KeyDown(KeyCode.RightShiftKey)) &&
-                SwinGame.KeyDown(KeyCode.CKey))
-            {
-                UtilityFunctions.DrawField(GameController.HumanPlayer.EnemyGrid, GameController.ComputerPlayer,
-                    true);
-            }
-            else
-            {
-                UtilityFunctions.DrawField(GameController.HumanPlayer.EnemyGrid, GameController.ComputerPlayer,
-                    false);
-            }
-
-            UtilityFunctions.DrawSmallField(GameController.HumanPlayer.EnemyGrid, GameController.HumanPlayer);
-            UtilityFunctions.DrawMessage();
-
-            SwinGame.DrawText(GameController.HumanPlayer.Shots.ToString(), Color.White,
-                GameResources.GameFont("Menu"), scoresLeft, shotsTop);
-            SwinGame.DrawText(GameController.HumanPlayer.Hits.ToString(), Color.White,
-                GameResources.GameFont("Menu"), scoresLeft, hitsTop);
-            SwinGame.DrawText(GameController.HumanPlayer.Missed.ToString(), Color.White,
-                GameResources.GameFont("Menu"), scoresLeft, splashTop);
-        }
+        SwinGame.DrawText(GameController.HumanPlayer.Shots.ToString(), Color.White, GameResources.GameFont("Menu"),
+            SCORES_LEFT, SHOTS_TOP);
+        SwinGame.DrawText(GameController.HumanPlayer.Hits.ToString(), Color.White, GameResources.GameFont("Menu"),
+            SCORES_LEFT, HITS_TOP);
+        SwinGame.DrawText(GameController.HumanPlayer.Missed.ToString(), Color.White, GameResources.GameFont("Menu"),
+            SCORES_LEFT, SPLASH_TOP);
     }
 }
