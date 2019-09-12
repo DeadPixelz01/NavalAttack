@@ -58,7 +58,7 @@ namespace MyGame.Model
         public ISeaGrid EnemyGrid { get; private set; }
 
         // The PlayerGrid is just a normal SeaGrid where the players ships can be deployed and seen
-        public static SeaGrid PlayerGrid => PlayerGrid;
+        public SeaGrid PlayerGrid => PlayerGrid;
 
         // ReadyToDeploy returns true if all ships are deployed
         public bool ReadyToDeploy => PlayerGrid.AllDeployed;
