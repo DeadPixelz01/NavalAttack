@@ -105,8 +105,8 @@ namespace MyGame.Model
         // SearchCoords will randomly generate shots within the grid as long as its not hit that tile already
         private void SearchCoords(ref int row, ref int column)
         {
-            row = Convert.ToInt32(RANDOM.Next(0, EnemyGrid.Height));
-            column = Convert.ToInt32(RANDOM.Next(0, EnemyGrid.Width));
+            row = Convert.ToInt32(_random.Next(0, EnemyGrid.Height));
+            column = Convert.ToInt32(_random.Next(0, EnemyGrid.Width));
             /* TODO Change to default(_) if this is not a reference type */
             _CurrentTarget = new Target(new Location(row, column), null );
         }

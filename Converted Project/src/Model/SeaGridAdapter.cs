@@ -36,7 +36,7 @@ namespace MyGame.Model
         // Changes the discovery grid. Where there is a ship we will sea water
         public TileView Item(int x, int y)
         {
-            var result = _MyGrid.get_Item(x, y);
+            var result = _MyGrid.Item(x, y);
             return result == TileView.Ship ? TileView.Sea : result;
         }
 
@@ -48,12 +48,6 @@ namespace MyGame.Model
 
         // Get the height of the tile
         public int Height => _MyGrid.Height;
-
-        // HitTile calls open _MyGrid to hit a tile at the row, col
-        TileView ISeaGrid.Item(int row, int col)
-        {
-            throw new NotImplementedException();
-        }
 
         public AttackResult HitTile(int row, int col)
         {

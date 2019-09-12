@@ -37,8 +37,6 @@ namespace MyGame.Model
         /// The width of the sea grid.
         public int Width => _WIDTH;
 
-        int ISeaGrid.Width => Width;
-
         /// The height of the sea grid
         public int Height => _HEIGHT;
 
@@ -46,7 +44,7 @@ namespace MyGame.Model
         public int ShipsKilled { get; private set; } = 0;
 
         // Show the tile view
-        public TileView get_Item(int x, int y)
+        public TileView Item(int x, int y)
         {
             return _GameTiles[x, y].View;
         }
@@ -66,21 +64,22 @@ namespace MyGame.Model
         }
 
         /// SeaGrid constructor, a sea grid has a number of tiles stored in an array
-        public SeaGrid(Dictionary<ShipName, Ship> ships, TileView item)
+        public SeaGrid(Dictionary<ShipName, Ship> ships)
         {
             // fill array with empty Tiles
-            var i = default(int);
-            var loopTo = Width - 1;
-            for (i = 0; i <= loopTo; i++)
+            _GameTiles = new Tile[Width, Height];
+
+            //fill array with empty Tiles
+            int i = 0;
+            for (i = 0; i <= Width - 1; i++)
             {
-                var loopTo1 = Height - 1;
-                for (var j = 0; j <= loopTo1; j++)
+                for (int j = 0; j <= Height - 1; j++)
                 {
                     _GameTiles[i, j] = new Tile(i, j, null);
                 }
             }
+
             _Ships = ships;
-            Item = item;
         }
 
         /// MoveShips allows for ships to be placed on the sea grid
@@ -139,14 +138,6 @@ namespace MyGame.Model
             {
                 Changed?.Invoke(this, EventArgs.Empty);
             }
-        }
-
-        public TileView Item { get; }
-
-        // HitTile hits a tile at a row/col, and whatever tile has been hit, a result will be displayed.
-        TileView ISeaGrid.Item(int row, int col)
-        {
-            throw new NotImplementedException();
         }
 
         public AttackResult HitTile(int row, int col)

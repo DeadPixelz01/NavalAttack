@@ -21,54 +21,90 @@ namespace MyGame.Model
 {
     public class Player : IEnumerable<Ship>
     {
-        protected readonly Random RANDOM = new Random();
-        private static readonly Dictionary<ShipName, Ship> SHIPS = new Dictionary<ShipName, Ship>();
-        protected BattleShipsGame GAME;
-        private IEnumerable<Ship> _EnumerableImplementation;
+        protected readonly Random _random = new Random();
+        private static readonly Dictionary<ShipName, Ship> _Ships = new Dictionary<ShipName, Ship>();
+        protected BattleShipsGame _game;
+        private SeaGrid _playerGrid;
+        private ISeaGrid _enemyGrid;
+
+        private int _shots;
+        private int _hits;
+        private int _misses;
 
         // Returns the game that the player is part of.
         public BattleShipsGame Game
         {
-            get => GAME;
-            set => GAME = value;
+            get => _game;
+            set => _game = value;
         }
 
         // Sets the grid of the enemy player
         public ISeaGrid Enemy
         {
-            set => EnemyGrid = value;
+            set => _enemyGrid = value;
         }
 
         // Constructor for player object. Initialises
         public Player(BattleShipsGame controller)
         {
-            GAME = controller;
+            _playerGrid = new SeaGrid(_Ships);
+
+            _game = controller;
 
             // for each ship add the ships name so the sea grid knows about them
             foreach (ShipName name in Enum.GetValues(typeof(ShipName)))
             {
                 if (name != ShipName.None)
-                    SHIPS.Add(name, new Ship(name));
+                    _Ships.Add(name, new Ship(name));
             }
 
             RandomizeDeployment();
         }
 
         // The EnemyGrid is a ISeaGrid because you shouldn't be allowed to see the enemies ships
-        public ISeaGrid EnemyGrid { get; private set; }
+        public ISeaGrid EnemyGrid
+        {
+            get
+            {
+                return _enemyGrid;
+            }
+            set
+            {
+                _enemyGrid = value;
+            }
+        }
 
         // The PlayerGrid is just a normal SeaGrid where the players ships can be deployed and seen
-        public SeaGrid PlayerGrid => PlayerGrid;
+        public SeaGrid PlayerGrid
+        {
+            get
+            {
+                return _playerGrid;
+            }
+        }
 
         // ReadyToDeploy returns true if all ships are deployed
-        public bool ReadyToDeploy => PlayerGrid.AllDeployed;
+        public bool ReadyToDeploy
+        {
+            get
+            {
+                return _playerGrid.AllDeployed;
+            }
+        }
 
-        public bool IsDestroyed => PlayerGrid.ShipsKilled == Enum.GetValues(typeof(ShipName)).Length - 1;
+        public bool IsDestroyed
+        {
+            get
+            {
+                // check if all ships are destroyed... -1 for the none ship
+                return _playerGrid.ShipsKilled == Enum.GetValues(typeof(ShipName)).Length - 1;
+            }
+        }
 
         // Returns the Player's ship with the given name.
         public Ship Ship(ShipName name)
         {
-            return name == ShipName.None ? null : SHIPS[name];
+            return name == ShipName.None ? null : _Ships[name];
         }
 
         // The number of shots the player has made
@@ -103,8 +139,8 @@ namespace MyGame.Model
         // Makes it possible to enumerate over the ships the player has.
         public IEnumerator<Ship> GetShipEnumerator()
         {
-            var result = new Ship[SHIPS.Values.Count + 1];
-            SHIPS.Values.CopyTo(result, 0);
+            var result = new Ship[_Ships.Values.Count + 1];
+            _Ships.Values.CopyTo(result, 0);
             var lst = new List<Ship>();
             lst.AddRange(result);
 
@@ -119,8 +155,8 @@ namespace MyGame.Model
         // Makes it possible to enumerate over the ships the player has.
         public IEnumerator GetEnumerator()
         {
-            var result = new Ship[SHIPS.Values.Count + 1];
-            SHIPS.Values.CopyTo(result, 0);
+            var result = new Ship[_Ships.Values.Count + 1];
+            _Ships.Values.CopyTo(result, 0);
             var lst = new List<Ship>();
             lst.AddRange(result);
 
@@ -176,9 +212,9 @@ namespace MyGame.Model
                 // generate random position until the ship can be placed
                 do
                 {
-                    var dir = RANDOM.Next(2);
-                    var x = RANDOM.Next(0, 11);
-                    var y = RANDOM.Next(0, 11);
+                    var dir = _random.Next(2);
+                    var x = _random.Next(0, 11);
+                    var y = _random.Next(0, 11);
                     var heading = dir == 0 ? Direction.UpDown : Direction.LeftRight;
 
                     // try to place ship, if position unplaceable, generate new coordinates

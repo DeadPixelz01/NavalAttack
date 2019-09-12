@@ -72,7 +72,7 @@ namespace MyGame.Model
             {
                 Delay();
                 GenerateCoords(ref row, ref column);
-                result = GAME.Shoot(row, column);
+                result = _game.Shoot(row, column);
                 ProcessShot(row, column, result);
             }
             // generate coordinates for shot// take shot
