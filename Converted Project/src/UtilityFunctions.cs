@@ -272,7 +272,13 @@ static class UtilityFunctions
             }
         }
 
-        SwinGame.DrawFramerate(675, 585);
+
+        // hides the games' fps unless the user presses down the tab key
+        if (SwinGame.KeyDown(KeyCode.TabKey))
+        {
+            // moved the fps so that its within the size of the game's window
+            SwinGame.DrawFramerate(600, 585);
+        }
     }
 
     public static void AddExplosion(int row, int col)
