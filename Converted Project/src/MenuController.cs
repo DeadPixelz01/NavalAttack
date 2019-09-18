@@ -15,7 +15,9 @@ static class MenuController
     /// </remarks>
     private readonly static string[][] _menuStructure = new[]
     {
-        new string[] {"PLAY", "SETUP", "SCORES", "QUIT"}, new string[] {"RETURN", "SURRENDER", "QUIT"},
+        // changed from displaying 'setup' to 'difficulty'
+        // this is less misleading for now (until we add in more setting options later)
+        new string[] {"PLAY", "DIFFICULTY", "SCORES", "QUIT"}, new string[] {"RETURN", "SURRENDER", "QUIT"},
         new string[] {"EASY", "MEDIUM", "HARD"}
     };
 
