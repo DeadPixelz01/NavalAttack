@@ -215,6 +215,9 @@ static class UtilityFunctions
         }
     }
 
+    /// <summary>
+    /// the message to display
+    /// </summary>
     private static string _message;
 
     /// <summary>
@@ -281,18 +284,37 @@ static class UtilityFunctions
         }
     }
 
+    /// <summary>
+    /// plays the animation of an explosion to a tile
+    /// </summary>
+    /// <param name="row"></param>
+    /// <param name="col"></param>
     public static void AddExplosion(int row, int col)
     {
         AddAnimation(row, col, "Splash");
     }
 
+    /// <summary>
+    /// plays the animation of a splash to a tile
+    /// </summary>
+    /// <param name="row"></param>
+    /// <param name="col"></param>
     public static void AddSplash(int row, int col)
     {
         AddAnimation(row, col, "Splash");
     }
 
+    /// <summary>
+    /// initialises a list of animations
+    /// </summary>
     private static List<Sprite> _Animations = new List<Sprite>();
 
+    /// <summary>
+    /// plays a specified animation to a tile
+    /// </summary>
+    /// <param name="row"></param>
+    /// <param name="col"></param>
+    /// <param name="image"></param>
     private static void AddAnimation(int row, int col, string image)
     {
         Sprite s;
@@ -312,6 +334,9 @@ static class UtilityFunctions
         _Animations.Add(s);
     }
 
+    /// <summary>
+    /// updates animations to the next frame
+    /// </summary>
     public static void UpdateAnimations()
     {
         List<Sprite> ended = new List<Sprite>();
@@ -329,12 +354,20 @@ static class UtilityFunctions
         }
     }
 
+    /// <summary>
+    /// draws a frame of animations
+    /// used by draw screen
+    /// </summary>
     public static void DrawAnimations()
     {
         foreach (Sprite s in _Animations)
             SwinGame.DrawSprite(s);
     }
 
+    /// <summary>
+    /// draws an individual animated sequence
+    /// eg. used by draw splash/explosion
+    /// </summary>
     public static void DrawAnimationSequence()
     {
         int i;
