@@ -67,7 +67,7 @@ static class DeploymentController
                 GameController.EndDeployment();
             else if (UtilityFunctions.IsMouseInRectangle(UP_DOWN_BUTTON_LEFT, TOP_BUTTONS_TOP, DIR_BUTTONS_WIDTH,
                 TOP_BUTTONS_HEIGHT))
-                _currentDirection = Direction.LeftRight;
+                _currentDirection = Direction.UpDown;
             else if (UtilityFunctions.IsMouseInRectangle(LEFT_RIGHT_BUTTON_LEFT, TOP_BUTTONS_TOP, DIR_BUTTONS_WIDTH,
                 TOP_BUTTONS_HEIGHT))
                 _currentDirection = Direction.LeftRight;
