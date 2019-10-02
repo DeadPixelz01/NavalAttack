@@ -23,9 +23,13 @@ static class EndingGameController
         toDraw.Height = SwinGame.ScreenHeight();
 
         if (GameController.HumanPlayer.IsDestroyed)
+        {
             whatShouldIPrint = "YOU LOSE!";
+        }
         else
+        {
             whatShouldIPrint = "-- WINNER --";
+        }
 
         SwinGame.DrawText(whatShouldIPrint, Color.White, Color.Transparent, GameResources.GameFont("ArialLarge"),
             FontAlignment.AlignCenter, toDraw);

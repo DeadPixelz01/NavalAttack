@@ -129,7 +129,7 @@ public class AIHardPlayer : AIPlayer
                 default:
                 {
                     throw new ApplicationException("AI has gone in an invalid state");
-                    break;
+                    //break;
                 }
             }
         } while ((row < 0 || column < 0 || row >= EnemyGrid.Height || column >= EnemyGrid.Width ||
@@ -162,6 +162,7 @@ public class AIHardPlayer : AIPlayer
     {
         row = _Random.Next(0, EnemyGrid.Height);
         column = _Random.Next(0, EnemyGrid.Width);
+        //_CurrentTarget = new Target(new @this.Row == (row, column), null);
         _CurrentTarget = new Target(new Location(row, column), null);
     }
 
@@ -197,7 +198,7 @@ public class AIHardPlayer : AIPlayer
             case ResultOfAttack.ShotAlready:
             {
                 throw new ApplicationException("Error in AI");
-                break;
+                //break;
             }
         }
 
