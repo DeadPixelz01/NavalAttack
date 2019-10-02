@@ -328,6 +328,7 @@ public static class GameController
 
             case GameState.EndingGame:
             {
+                //SwinGame.Delay(300);
                 EndingGameController.HandleEndOfGameInput();
                 break;
             }

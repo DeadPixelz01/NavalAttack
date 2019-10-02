@@ -33,6 +33,7 @@ static class EndingGameController
 
         SwinGame.DrawText(whatShouldIPrint, Color.White, Color.Transparent, GameResources.GameFont("ArialLarge"),
             FontAlignment.AlignCenter, toDraw);
+        SwinGame.DrawText("Press Enter To Continue...", Color.White, 300, 400);
     }
 
     /// <summary>
@@ -41,8 +42,9 @@ static class EndingGameController
     /// </summary>
     public static void HandleEndOfGameInput()
     {
-        if (SwinGame.MouseClicked(MouseButton.LeftButton) || SwinGame.KeyTyped(KeyCode.ReturnKey) ||
-            SwinGame.KeyTyped(KeyCode.EscapeKey))
+        //if (SwinGame.MouseClicked(MouseButton.LeftButton) || SwinGame.KeyTyped(KeyCode.ReturnKey) ||
+        //    SwinGame.KeyTyped(KeyCode.EscapeKey))
+        if (SwinGame.KeyTyped(KeyCode.ReturnKey))
         {
             HighScoreController.ReadHighScore(GameController.HumanPlayer.Score);
             GameController.EndCurrentState();
