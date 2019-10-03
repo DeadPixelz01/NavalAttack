@@ -20,7 +20,7 @@ static class DiscoveryController
 
         if (SwinGame.MouseClicked(MouseButton.LeftButton))
             DoAttack();
-        if (SwinGame.KeyTyped(KeyCode.LeftShiftKey) || SwinGame.KeyDown(KeyCode.RightShiftKey) && SwinGame.KeyTyped(KeyCode.WKey))
+        if ((SwinGame.KeyDown(KeyCode.LeftShiftKey) | SwinGame.KeyDown(KeyCode.RightShiftKey)) & SwinGame.KeyDown(KeyCode.WKey))
         {
             Audio.PlaySoundEffect(GameResources.GameSound("Winner"));
             GameController.SwitchState(GameState.EndingGame);
