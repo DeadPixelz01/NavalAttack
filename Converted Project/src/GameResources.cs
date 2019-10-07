@@ -1,8 +1,14 @@
 using System.Collections.Generic;
 using SwinGameSDK;
 
+/// <summary>
+/// object to initialise all game resources
+/// </summary>
 public static class GameResources
 {
+    /// <summary>
+    /// initialises all fonts
+    /// </summary>
     private static void LoadFonts()
     {
         NewFont("ArialLarge", "arial.ttf", 80);
@@ -11,6 +17,9 @@ public static class GameResources
         NewFont("Menu", "ffaccess.ttf", 8);
     }
 
+    /// <summary>
+    /// initialises all images
+    /// </summary>
     private static void LoadImages()
     {
         // Backgrounds
@@ -38,6 +47,9 @@ public static class GameResources
         NewImage("Splash", "splash.png");
     }
 
+    /// <summary>
+    /// initialises all sounds
+    /// </summary>
     private static void LoadSounds()
     {
         NewSound("Error", "error.wav");
@@ -49,6 +61,9 @@ public static class GameResources
         NewSound("Lose", "lose.wav");
     }
 
+    /// <summary>
+    /// initialises all music
+    /// </summary>
     private static void LoadMusic()
     {
         NewMusic("Background", "horrordrone.mp3");
@@ -143,6 +158,9 @@ public static class GameResources
         EndLoadingScreen(width, height);
     }
 
+    /// <summary>
+    /// display loading screen
+    /// </summary>
     private static void ShowLoadingScreen()
     {
         _Background = SwinGame.LoadBitmap(SwinGame.PathToResource("SplashBack.png", ResourceKind.BitmapResource));
@@ -160,6 +178,9 @@ public static class GameResources
         PlaySwinGameIntro();
     }
 
+    /// <summary>
+    /// show intro 
+    /// </summary>
     private static void PlaySwinGameIntro()
     {
         const int ANI_CELL_COUNT = 11;
@@ -179,6 +200,11 @@ public static class GameResources
         SwinGame.Delay(1500);
     }
 
+    /// <summary>
+    /// displays a message in a text box on the screen
+    /// </summary>
+    /// <param name="message"></param>
+    /// <param name="number"></param>
     private static void ShowMessage(string message, int number)
     {
         const int TX = 310;
@@ -208,6 +234,11 @@ public static class GameResources
         SwinGame.ProcessEvents();
     }
 
+    /// <summary>
+    /// closes loading screen and sets up main game to run
+    /// </summary>
+    /// <param name="width"></param>
+    /// <param name="height"></param>
     private static void EndLoadingScreen(int width, int height)
     {
         SwinGame.ProcessEvents();
@@ -223,60 +254,108 @@ public static class GameResources
         SwinGame.ChangeScreenSize(width, height);
     }
 
+    /// <summary>
+    /// method for loading new fonts
+    /// </summary>
+    /// <param name="fontName"></param>
+    /// <param name="filename"></param>
+    /// <param name="size"></param>
     private static void NewFont(string fontName, string filename, int size)
     {
         _Fonts.Add(fontName, SwinGame.LoadFont(SwinGame.PathToResource(filename, ResourceKind.FontResource), size));
     }
 
+    /// <summary>
+    /// method for loading new images
+    /// </summary>
+    /// <param name="imageName"></param>
+    /// <param name="filename"></param>
     private static void NewImage(string imageName, string filename)
     {
         _Images.Add(imageName, SwinGame.LoadBitmap(SwinGame.PathToResource(filename, ResourceKind.BitmapResource)));
     }
 
+    /// <summary>
+    /// method for loading new transparent images
+    /// </summary>
+    /// <param name="imageName"></param>
+    /// <param name="fileName"></param>
+    /// <param name="transColor"></param>
     private static void NewTransparentColorImage(string imageName, string fileName, Color transColor)
     {
         _Images.Add(imageName, SwinGame.LoadBitmap(SwinGame.PathToResource(fileName, ResourceKind.BitmapResource)));
     }
 
+    /// <summary>
+    /// calls the above method but with different spelling
+    /// </summary>
+    /// <param name="imageName"></param>
+    /// <param name="fileName"></param>
+    /// <param name="transColor"></param>
     private static void NewTransparentColourImage(string imageName, string fileName, Color transColor)
     {
         NewTransparentColorImage(imageName, fileName, transColor);
     }
 
+    /// <summary>
+    /// method for loading new sound effects
+    /// </summary>
+    /// <param name="soundName"></param>
+    /// <param name="filename"></param>
     private static void NewSound(string soundName, string filename)
     {
         _Sounds.Add(soundName, Audio.LoadSoundEffect(SwinGame.PathToResource(filename, ResourceKind.SoundResource)));
     }
 
+    /// <summary>
+    /// method for loading new music
+    /// </summary>
+    /// <param name="musicName"></param>
+    /// <param name="filename"></param>
     private static void NewMusic(string musicName, string filename)
     {
         _Music.Add(musicName, Audio.LoadMusic(SwinGame.PathToResource(filename, ResourceKind.SoundResource)));
     }
 
+    /// <summary>
+    /// called by free resources to close all fonts
+    /// </summary>
     private static void FreeFonts()
     {
         foreach (var obj in _Fonts.Values)
             SwinGame.FreeFont(obj);
     }
 
+    /// <summary>
+    /// called by free resources to close all images
+    /// </summary>
     private static void FreeImages()
     {
         foreach (var obj in _Images.Values)
             SwinGame.FreeBitmap(obj);
     }
 
+    /// <summary>
+    /// called by free resources to close all sounds
+    /// </summary>
     private static void FreeSounds()
     {
         foreach (var obj in _Sounds.Values)
             Audio.FreeSoundEffect(obj);
     }
 
+    /// <summary>
+    /// called by free resources to close all music
+    /// </summary>
     private static void FreeMusic()
     {
         foreach (var obj in _Music.Values)
             Audio.FreeMusic(obj);
     }
 
+    /// <summary>
+    /// closes all resources
+    /// </summary>
     public static void FreeResources()
     {
         FreeFonts();

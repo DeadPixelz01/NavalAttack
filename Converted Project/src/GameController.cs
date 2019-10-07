@@ -48,6 +48,9 @@ public static class GameController
         get { return _ai; }
     }
 
+    /// <summary>
+    /// constructor
+    /// </summary>
     static GameController()
     {
         // bottom state will be quitting. If player exits main menu then the game is over
@@ -124,6 +127,12 @@ public static class GameController
         SwinGame.RefreshScreen();
     }
 
+    /// <summary>
+    /// call explosion animation from utility functions and play sound effect
+    /// </summary>
+    /// <param name="row"></param>
+    /// <param name="column"></param>
+    /// <param name="showAnimation"></param>
     private static void PlayHitSequence(int row, int column, bool showAnimation)
     {
         if (showAnimation)
@@ -134,6 +143,12 @@ public static class GameController
         UtilityFunctions.DrawAnimationSequence();
     }
 
+    /// <summary>
+    /// call miss animation from utility functions and play sound effect
+    /// </summary>
+    /// <param name="row"></param>
+    /// <param name="column"></param>
+    /// <param name="showAnimation"></param>
     private static void PlayMissSequence(int row, int column, bool showAnimation)
     {
         if (showAnimation)

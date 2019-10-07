@@ -55,10 +55,11 @@ static class DiscoveryController
     /// </summary>s
     public static void DrawDiscovery()
     {
-        const int SCORES_LEFT = 172;
-        const int SHOTS_TOP = 157;
-        const int HITS_TOP = 206;
-        const int SPLASH_TOP = 256;
+        const int SCORES_LEFT = 170;
+        const int SHOTS_TOP = 155;
+        const int HITS_TOP = 205;
+        const int SPLASH_TOP = 255;
+        const int SCORE_TOP = 300;
 
         if ((SwinGame.KeyDown(KeyCode.LeftShiftKey) | SwinGame.KeyDown(KeyCode.RightShiftKey)) &
             SwinGame.KeyDown(KeyCode.CKey))
@@ -75,5 +76,7 @@ static class DiscoveryController
             SCORES_LEFT, HITS_TOP);
         SwinGame.DrawText(GameController.HumanPlayer.Missed.ToString(), Color.White, GameResources.GameFont("Menu"),
             SCORES_LEFT, SPLASH_TOP);
+        SwinGame.DrawText(GameController.HumanPlayer.Score.ToString(), Color.White, GameResources.GameFont("Menu"),
+            SCORES_LEFT, SCORE_TOP);
     }
 }

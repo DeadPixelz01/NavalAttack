@@ -40,6 +40,10 @@ public class Player : IEnumerable<Ship>
         set { _enemyGrid = value; }
     }
 
+    /// <summary>
+    /// constructor
+    /// </summary>
+    /// <param name="controller"></param>
     public Player(BattleShipsGame controller)
     {
         _game = controller;
@@ -79,7 +83,10 @@ public class Player : IEnumerable<Ship>
     {
         get { return _playerGrid.AllDeployed; }
     }
-
+    
+    /// <summary>
+    /// IsDestroyed rturns true if all ships are destroyed
+    /// </summary>
     public bool IsDestroyed
     {
         get
@@ -114,6 +121,9 @@ public class Player : IEnumerable<Ship>
         get { return _shots; }
     }
 
+    /// <summary>
+    /// the number of shots the player has hit
+    /// </summary>
     public int Hits
     {
         get { return _hits; }
@@ -129,6 +139,9 @@ public class Player : IEnumerable<Ship>
         get { return _misses; }
     }
 
+    /// <summary>
+    /// calculates score
+    /// </summary>
     public int Score
     {
         get
@@ -155,6 +168,11 @@ public class Player : IEnumerable<Ship>
         return lst.GetEnumerator();
     }
 
+    /// <summary>
+    /// makes it possible to enumerate over the ships the player
+    /// has
+    /// </summary>
+    /// <returns></returns>
     IEnumerator<Ship> IEnumerable<Ship>.GetEnumerator()
     {
         return GetShipEnumerator();
@@ -215,6 +233,9 @@ public class Player : IEnumerable<Ship>
         return result;
     }
 
+    /// <summary>
+    /// randomise placement of ships
+    /// </summary>
     public virtual void RandomizeDeployment()
     {
         bool placementSuccessful = default(bool);
